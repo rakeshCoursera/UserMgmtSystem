@@ -22,14 +22,18 @@ function TableRow(props) {
 
 function Table(props) {
   const TableRows = props.rows.map((val, index) =>
-  <TableRow key={index.toString()} row = {Object.values(val)}/>);
+    <TableRow key={index.toString()} row={Object.values(val)} />);
   return (
-    <table>
-       <tbody>
-        <TableHeader headers = {Object.keys(props.rows[0])}/>
-        {TableRows}
-      </tbody>
-    </table>
+    <div className="table-responsive">
+      <table className="table table-striped table-hover">
+        <thead>
+          <TableHeader headers={Object.keys(props.rows[0])} />
+        </thead>
+        <tbody>
+          {TableRows}
+        </tbody>
+      </table>
+    </div>
   );
 }
 
