@@ -12,7 +12,7 @@ export default class Nav extends React.Component {
               <span className="icon-bar"></span>
               <span className="icon-bar"></span>
             </button>
-            <a className="navbar-brand" href="#">React Router</a>
+            <a className="navbar-brand" href="#">built.io</a>
           </div>
           <div id="navbar" className="navbar-collapse collapse">
             {this.props.children}

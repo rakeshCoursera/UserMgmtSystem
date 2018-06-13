@@ -6,9 +6,9 @@ const router = express.Router();
 router.get('/', (req, res) => {
   User.find({}, (err, doc) => {
     if (!err) {
-      res.status(200).send(doc);
+      res.status(200).json(doc);
     } else {
-      res.status(500).send(err);
+      res.status(500).json(err);
     }
   });
 });
@@ -18,14 +18,14 @@ router.post('/', (req, res) => {
     first_name: req.body.first_name,
     last_name: req.body.last_name,
     email: req.body.email,
-    phone: req.body.phone,
-    dob: req.body.dob,
+    mobile: req.body.mobile,
+    dob: new Date(req.body.dob).toISOString(),
     active: req.body.active,
   }, (err, doc) => {
     if (!err) {
-      res.status(200).send(doc);
+      res.status(200).json(doc);
     } else {
-      res.status(500).send({ error: err });
+      res.status(500).json({ error: err });
     }
   });
 });
@@ -35,9 +35,9 @@ router.get('/:id', (req, res) => {
     _id: req.params.id,
   }, (err, doc) => {
     if (!err) {
-      res.status(200).send(doc);
+      res.status(200).json(doc);
     } else {
-      res.status(500).send(err);
+      res.status(500).json(err);
     }
   });
 });
@@ -49,14 +49,14 @@ router.put('/:id', (req, res) => {
     first_name: req.body.first_name,
     last_name: req.body.last_name,
     email: req.body.email,
-    phone: req.body.phone,
+    mobile: req.body.mobile,
     dob: req.body.dob,
     active: req.body.active,
   }, { new: true }, (err, doc) => {
     if (!err) {
-      res.status(200).send(doc);
+      res.status(200).json(doc);
     } else {
-      res.status(500).send(err);
+      res.status(500).json(err);
     }
   });
 });
@@ -70,9 +70,9 @@ router.delete('/:id', (req, res) => {
         message: 'Todo successfully deleted',
         id: doc._id,
       };
-      res.status(200).send(response);
+      res.status(200).json(response);
     } else {
-      res.status(500).send(err);
+      res.status(500).json(err);
     }
   });
 });

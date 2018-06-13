@@ -12,7 +12,7 @@ const User = new Schema({
   email: {
     type: String,
   },
-  phone: {
+  mobile: {
     type: String,
   },
   dob: {
