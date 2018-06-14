@@ -1,114 +1,94 @@
 import React from 'react';
 import axios from 'axios';
-import moment from 'moment';
+import formatUserArray from '../lib/formatUserArray';
+import Select from '../statelessComponents/select';
+import InputField from '../statelessComponents/input';
 import UserTable from '../statelessComponents/userTable';
 
 class ListUsers extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      userDetails: [],
       users: [],
-      error: '',
-      select: 'Name',
+      select: 'Email',
       filterValue: '',
     };
-    this.onSelectChange = this.onSelectChange.bind(this);
-    this.onHandleChange = this.onHandleChange.bind(this);
+    this.onHandleSelectChange = this.onHandleSelectChange.bind(this);
+    this.onHandleInputChange = this.onHandleInputChange.bind(this);
   }
 
   // Get the users array and save into users array
-  componentWillMount() {
+  componentDidMount() {
     const that = this;
     axios.get('/user') // get the products related data
       .then((response) => {
-        that.setState({ users: response.data });
+        that.setState({ users: response.data, userDetails: response.data });
       })
       .catch((error) => {
-        that.setState({ message: error });
+        console.log('Error: ', error);
       });
   }
 
-  onSelectChange(event) {
-    console.log('Select Event: ', event.target.value);
+  onHandleSelectChange(event) {
     this.setState({ select: event.target.value });
   }
 
-  onHandleChange(event) {
-    console.log('Filter Event: ', event.target.value);
-    this.setState({ filterValue: event.target.value });
+  onHandleInputChange(event) {
+    this.setState({ filterValue: event.target.value }, () => {
+      const userCopy = this.state.userDetails.slice();
+      if (this.state.select === 'Email') {
+        const filteredArray = userCopy.filter(myObj => myObj[(this.state.select).toLocaleLowerCase()].includes(this.state.filterValue));
+        console.log('Filtered Array: ', filteredArray);
+        this.setState({ users: filteredArray });
+      }
+    });
   }
 
   render() {
-    if (this.state.users !== undefined) {
-      if (this.state.users.length > 0) {
-        console.log('users', this.state.users);
-        const userData = this.state.users.map((myObj) => {
-          const obj = {};
-          Object.keys(myObj).forEach((element) => {
-            if (element === 'first_name' || element === 'last_name') {
-              if (obj.Name === undefined || obj.Name === '') {
-                obj.Name = myObj.first_name;
-              } else {
-                obj.Name += ` ${myObj.last_name}`;
-              }
-            } else if (element === 'dob') {
-              obj['Date Of Birth'] = moment(myObj[element]).format('DD MMM YYYY');
-              obj.Age = moment().diff(myObj[element], 'years');
-            } else {
-              obj[element[0].toUpperCase() + element.substr(1).toLowerCase()] = myObj[element];
-            }
-          });
-          return obj;
-        });
-
-        console.log('Modified Users Data: ', userData);
-
-        return (
-          <div >
-            <div className="form-group">
-              <div className="col-sm-6 col-xs-4 col-md-4 col-lg-4">
-                <label htmlFor="company">Filter Using</label>
-                <select
-                  id="company"
-                  className="form-control"
-                  onChange={this.onSelectChange}
-                  value={this.state.select}
-                >
-                  <option>Name</option>
-                  <option>Email</option>
-                  <option>Mobile</option>
-                </select>
-              </div>
-              <div className="col-sm-6 col-xs-8 col-md-8 col-lg-8">
-                <label htmlFor="filterBox">Filter Value:</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="filterBox"
-                  placeholder= {`Enter the ${this.state.select} to filter`}
-                  name="filterBox"
-                  value={this.state.filterValue !== null ? this.state.filterValue : ''}
-                  onChange = {this.onHandleChange}
-              />
-              </div>
-            </div>
-            <div className="col-sm-12 col-xs-12 col-md-12 col-lg-12">
-              <br />
-              <UserTable rows={userData} />
-            </div>
+    const FixedHtml = (
+      <div className="form-group">
+          <div className="col-sm-6 col-xs-4 col-md-4 col-lg-4">
+            <Select
+              onSelectChange = {this.onHandleSelectChange}
+              currentValue = {this.state.select}
+              options = {['Email', 'Name']}
+            />
           </div>
-        );
-      } else if (this.state.error !== '') {
-        return (
-          <div className = "text-center">
-            <h3>An Error has occured</h3>
-            <p>{this.state.error}</p>
+          <div className="col-sm-6 col-xs-8 col-md-8 col-lg-8">
+            <InputField
+              placeholder = {`Enter the ${this.state.select} to filter`}
+              currentValue={this.state.filterValue !== null ? this.state.filterValue : ''}
+              onHandleChange = {this.onHandleInputChange}
+            />
           </div>
-        );
-      }
-      return 'Loading...!!!';
+        </div>
+    );
+
+    if (this.state.users !== undefined && this.state.users.length === 0) {
+      return (
+        <div>
+          {FixedHtml}
+          <div className="text-center">
+            <br />
+            <p>Loading data from database...!!!</p>
+          </div>
+        </div>
+      );
     }
-    return 'No users in the database!!!';
+    const userData = formatUserArray(this.state.users);
+
+    console.log('Modified Users Data: ', userData);
+
+    return (
+      <div >
+        {FixedHtml}
+        <div className="col-sm-12 col-xs-12 col-md-12 col-lg-12">
+          <br />
+          <UserTable rows={userData} />
+        </div>
+      </div>
+    );
   }
 }
 
