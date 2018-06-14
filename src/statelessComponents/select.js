@@ -3,11 +3,10 @@ import React from 'react';
 /* eslint-enable no-unused-vars */
 
 const Select = (props) => {
-  console.log('select props', props);
   const options = props.options.map((val, index) => <option key={index.toString()}>{val}</option>);
   return (
     <div>
-      <label htmlFor="filterField">Filter Using</label>
+      <label htmlFor="filterField">{props.text}</label>
         <select
           id= "filterField"
           className="form-control"

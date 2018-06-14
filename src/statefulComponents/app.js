@@ -4,6 +4,7 @@ import React from 'react';
 import { Switch, Route, Link } from 'react-router-dom';
 import NotFound from '../statelessComponents/notFound';
 import ListUsers from './listUsers';
+import UserDetails from './userDetails';
 import Nav from './nav';
 
 const Home = () => (
@@ -21,6 +22,7 @@ const App = () => (
     <Switch>
       <Route exact path="/" component={ListUsers}/>
       <Route exact path="/users" component={Home}/>
+      <Route path="/user/:userId" render={props => <UserDetails {...props} />}/>
       <Route component={NotFound} />
     </Switch>
   </div>

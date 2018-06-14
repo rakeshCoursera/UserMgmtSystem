@@ -3,7 +3,7 @@ import React from 'react';
 /* eslint-enable no-unused-vars */
 
 const InputField = props => <div>
-       <label htmlFor="filterBox">Filter Value:</label>
+       <label htmlFor="filterBox">{props.text}</label>
           <input
             type="text"
             className="form-control"

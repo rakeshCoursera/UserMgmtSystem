@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import formatUserArray from '../lib/formatUserArray';
+import FormatUserArray from '../lib/formatUserArray';
 import Select from '../statelessComponents/select';
 import InputField from '../statelessComponents/input';
 import UserTable from '../statelessComponents/userTable';
@@ -9,23 +9,28 @@ class ListUsers extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      userDetails: [],
+      usersDetails: [],
       users: [],
-      select: 'Email',
+      user: {},
+      select: 'Name',
       filterValue: '',
     };
     this.onHandleSelectChange = this.onHandleSelectChange.bind(this);
     this.onHandleInputChange = this.onHandleInputChange.bind(this);
+    this.onHandleNameClick = this.onHandleNameClick.bind(this);
   }
 
   // Get the users array and save into users array
   componentDidMount() {
     const that = this;
-    axios.get('/user') // get the products related data
+    axios.get('/v1/user') // get the products related data
       .then((response) => {
-        that.setState({ users: response.data, userDetails: response.data });
-      })
-      .catch((error) => {
+        FormatUserArray(response.data).then((userArray) => {
+          that.setState({ users: userArray, usersDetails: userArray });
+        }).catch((err) => {
+          console.log('Error: ', err);
+        });
+      }).catch((error) => {
         console.log('Error: ', error);
       });
   }
@@ -36,13 +41,23 @@ class ListUsers extends React.Component {
 
   onHandleInputChange(event) {
     this.setState({ filterValue: event.target.value }, () => {
-      const userCopy = this.state.userDetails.slice();
-      if (this.state.select === 'Email') {
-        const filteredArray = userCopy.filter(myObj => myObj[(this.state.select).toLocaleLowerCase()].includes(this.state.filterValue));
-        console.log('Filtered Array: ', filteredArray);
-        this.setState({ users: filteredArray });
-      }
+      const userCopy = this.state.usersDetails.slice();
+      const filteredArray = userCopy.filter(myObj =>
+        (myObj[(this.state.select)].toLowerCase())
+          .includes((this.state.filterValue).toLowerCase()));
+      console.log('Filtered Array: ', filteredArray);
+      this.setState({ users: filteredArray });
     });
+  }
+
+  onHandleNameClick(key) {
+    const userId = this.state.usersDetails.filter((myObj, index) => index === key)[0]._id;
+    this.props.history.push(`/user/${userId}`);
+  }
+
+  onHandleActionClick(key) {
+    const userObj = this.state.usersDetails.filter((myObj, index) => index === key);
+    this.setState({ user: userObj });
   }
 
   render() {
@@ -50,13 +65,15 @@ class ListUsers extends React.Component {
       <div className="form-group">
           <div className="col-sm-6 col-xs-4 col-md-4 col-lg-4">
             <Select
+              text = 'Filter Using'
               onSelectChange = {this.onHandleSelectChange}
               currentValue = {this.state.select}
-              options = {['Email', 'Name']}
+              options = {['Name', 'Email']}
             />
           </div>
           <div className="col-sm-6 col-xs-8 col-md-8 col-lg-8">
             <InputField
+              text = 'Filter Value'
               placeholder = {`Enter the ${this.state.select} to filter`}
               currentValue={this.state.filterValue !== null ? this.state.filterValue : ''}
               onHandleChange = {this.onHandleInputChange}
@@ -76,16 +93,17 @@ class ListUsers extends React.Component {
         </div>
       );
     }
-    const userData = formatUserArray(this.state.users);
-
-    console.log('Modified Users Data: ', userData);
-
     return (
       <div >
         {FixedHtml}
         <div className="col-sm-12 col-xs-12 col-md-12 col-lg-12">
           <br />
-          <UserTable rows={userData} />
+          <UserTable
+            rows={this.state.users}
+            onHandleClick = {this.onHandleNameClick}
+            onActionsClick = {this.onHandleActionClick}
+          />
+          <Model user={this.state.user}/>
         </div>
       </div>
     );
