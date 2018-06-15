@@ -4,8 +4,8 @@ import React from 'react';
 
 const InputField = props => <div>
        <label htmlFor="filterBox">{props.text}</label>
-          <input
-            type="text"
+        <input
+            type={props.type}
             className="form-control"
             id="filterBox"
             placeholder= {props.placeholder}

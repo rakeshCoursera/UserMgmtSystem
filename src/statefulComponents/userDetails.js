@@ -25,8 +25,7 @@ class Form extends React.Component {
   }
 
   render() {
-    console.log('user:', this.state.user);
-    if (this.state.user !== undefined && Object.keys(this.state.user).length === 0) {
+    if (this.state.user === undefined || Object.keys(this.state.user).length === 0) {
       return (
         <div>
           <br />

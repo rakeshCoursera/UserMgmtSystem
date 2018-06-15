@@ -3,7 +3,6 @@ import React from 'react';
 /* eslint-enable no-unused-vars */
 
 const TableHeader = (props) => {
-  console.log('Headers: ', props.headers);
   const headers = props.headers.map((val, index) => <th key={index.toString()}>{val}</th>);
   headers.push(<th key='Actions'>Actions</th>);
   return (
@@ -14,13 +13,12 @@ const TableHeader = (props) => {
 };
 
 const TableRow = (props) => {
-  console.log('row: ', props);
   const rows = props.row.map((val, index) => {
     if (index === 0) {
       return (
         <td key={index.toString()}>
           <button type="button" className="btn btn-link" onClick = {() => props.onRowHandleClick(props.rowNo)}>
-            {val.toString()}
+            {val}
           </button>
         </td>);
     }
@@ -30,7 +28,7 @@ const TableRow = (props) => {
       const colorValue = val === true ? { color: 'green' } : { color: 'red' };
       return <td key={index.toString()}> <p style={colorValue}>{textValue} </p></td>;
     }
-    return <td key={index.toString()}>{val.toString()} </td>;
+    return <td key={index.toString()}>{typeof val === 'string' ? val : val.toString() } </td>;
   });
   rows.push(<td key='Edit'>
     <button type="button" className="btn btn-link" onClick = {() => props.onActionHandleClick(props.rowNo)} data-toggle="modal" data-target="#myModal">
@@ -45,7 +43,6 @@ const TableRow = (props) => {
 };
 
 const Table = (props) => {
-  console.log('table rows: ', props.rows);
   const TableHeaders = Object.keys(props.rows[0]).filter(val => val !== '__v' && val !== '_id');
   const TableRows = props.rows.map((val, index) =>
     <TableRow
@@ -53,6 +50,7 @@ const Table = (props) => {
       rowNo = {index}
       row={TableHeaders.map(objKey => val[objKey])}
       onRowHandleClick = {props.onHandleClick}
+      onActionHandleClick = {props.onActionsClick}
     />);
   return (
     <div className="table-responsive">

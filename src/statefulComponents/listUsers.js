@@ -3,6 +3,7 @@ import axios from 'axios';
 import FormatUserArray from '../lib/formatUserArray';
 import Select from '../statelessComponents/select';
 import InputField from '../statelessComponents/input';
+import Model from './modal';
 import UserTable from '../statelessComponents/userTable';
 
 class ListUsers extends React.Component {
@@ -18,6 +19,8 @@ class ListUsers extends React.Component {
     this.onHandleSelectChange = this.onHandleSelectChange.bind(this);
     this.onHandleInputChange = this.onHandleInputChange.bind(this);
     this.onHandleNameClick = this.onHandleNameClick.bind(this);
+    this.onHandleActionClick = this.onHandleActionClick.bind(this);
+    this.onHandleUpdateClick = this.onHandleUpdateClick.bind(this);
   }
 
   // Get the users array and save into users array
@@ -45,7 +48,6 @@ class ListUsers extends React.Component {
       const filteredArray = userCopy.filter(myObj =>
         (myObj[(this.state.select)].toLowerCase())
           .includes((this.state.filterValue).toLowerCase()));
-      console.log('Filtered Array: ', filteredArray);
       this.setState({ users: filteredArray });
     });
   }
@@ -56,8 +58,27 @@ class ListUsers extends React.Component {
   }
 
   onHandleActionClick(key) {
-    const userObj = this.state.usersDetails.filter((myObj, index) => index === key);
+    const userObj = this.state.users.filter((myObj, index) => index === key)[0];
     this.setState({ user: userObj });
+  }
+
+  onHandleUpdateClick(obj, id) {
+    console.log('obj, Id: ', obj, id);
+    const that = this;
+    axios.put(`/v1/user/${id}`, obj)
+      .then((response) => {
+        const userCopy = this.state.users.slice();
+        const indexNum = this.state.users.findIndex(myObj => myObj._id === id);
+        FormatUserArray([response.data]).then((retArr) => {
+          userCopy[indexNum] = retArr[0];
+          console.log('Return Array: ', retArr);
+          that.setState({ users: userCopy, usersDetails: userCopy });
+        }).catch((err) => {
+          console.log('Error update: ', err);
+        });
+      }).catch((err) => {
+        console.log('Error update2: ', err);
+      });
   }
 
   render() {
@@ -75,6 +96,7 @@ class ListUsers extends React.Component {
             <InputField
               text = 'Filter Value'
               placeholder = {`Enter the ${this.state.select} to filter`}
+              type='text'
               currentValue={this.state.filterValue !== null ? this.state.filterValue : ''}
               onHandleChange = {this.onHandleInputChange}
             />
@@ -82,7 +104,7 @@ class ListUsers extends React.Component {
         </div>
     );
 
-    if (this.state.users !== undefined && this.state.users.length === 0) {
+    if (this.state.users === undefined || this.state.users.length === 0) {
       return (
         <div>
           {FixedHtml}
@@ -93,6 +115,7 @@ class ListUsers extends React.Component {
         </div>
       );
     }
+
     return (
       <div >
         {FixedHtml}
@@ -103,7 +126,11 @@ class ListUsers extends React.Component {
             onHandleClick = {this.onHandleNameClick}
             onActionsClick = {this.onHandleActionClick}
           />
-          <Model user={this.state.user}/>
+          {Object.keys(this.state.user).length > 0 ?
+            <Model
+              user={this.state.user}
+              onUpdateClick = {this.onHandleUpdateClick}
+            /> : <div></div>}
         </div>
       </div>
     );

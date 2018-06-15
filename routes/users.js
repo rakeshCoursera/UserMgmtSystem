@@ -51,6 +51,19 @@ router.put('/:id', (req, res) => {
     email: req.body.email,
     mobile: req.body.mobile,
     dob: req.body.dob,
+  }, { new: true }, (err, doc) => {
+    if (!err) {
+      res.status(200).json(doc);
+    } else {
+      res.status(500).json(err);
+    }
+  });
+});
+
+router.put('/:id/isactive', (req, res) => {
+  User.findByIdAndUpdate({
+    _id: req.params.id,
+  }, {
     active: req.body.active,
   }, { new: true }, (err, doc) => {
     if (!err) {
