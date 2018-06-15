@@ -1,7 +1,6 @@
-/* eslint-disable no-unused-vars */
-import React from 'react';
-/* eslint-enable no-unused-vars */
+import React from 'react'; // eslint-disable-line no-unused-vars
 
+// A functional component for html input element
 const InputField = props => <div>
        <label htmlFor="filterBox">{props.text}</label>
         <input

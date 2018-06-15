@@ -1,7 +1,6 @@
-/* eslint-disable no-unused-vars */
-import React from 'react';
-/* eslint-enable no-unused-vars */
+import React from 'react'; // eslint-disable-line no-unused-vars
 
+// A functional component for html select options
 const Select = (props) => {
   const options = props.options.map((val, index) => <option key={index.toString()}>{val}</option>);
   return (

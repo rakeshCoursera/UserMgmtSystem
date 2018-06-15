@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 
+// User details page with a button which takes user to Listing Page
 class Form extends React.Component {
   constructor(props) {
     super(props);
@@ -41,11 +42,12 @@ class Form extends React.Component {
     return (
       <div>
         <div>
-        <button type="button" class="btn btn-default" onClick={this.onHandleClick}>
+        <button type="button" className="btn btn-info" onClick={this.onHandleClick}>
           <b>Back to List</b>
         </button>
         </div>
         <div>
+          <br />
           {fields}
         </div>
       </div>

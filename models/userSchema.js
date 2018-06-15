@@ -1,3 +1,4 @@
+// MongoDB database schema defination using mongoose
 const mongoose = require('mongoose');
 
 const { Schema } = mongoose;

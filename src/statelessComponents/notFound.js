@@ -1,7 +1,6 @@
-/* eslint-disable no-unused-vars */
-import React from 'react';
-/* eslint-enable no-unused-vars */
+import React from 'react'; // eslint-disable-line no-unused-vars
 
+// Not found route functional component
 const NotFound = () => (
   <div className="text-center">
     <h3>404 page not found</h3>
