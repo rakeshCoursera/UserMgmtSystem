@@ -21,6 +21,7 @@ class ListUsers extends React.Component {
     this.onHandleNameClick = this.onHandleNameClick.bind(this);
     this.onHandleActionClick = this.onHandleActionClick.bind(this);
     this.onHandleUpdateClick = this.onHandleUpdateClick.bind(this);
+    this.onHandleCheckboxClick = this.onHandleCheckboxClick.bind(this);
   }
 
   // Get the users array and save into users array
@@ -60,6 +61,14 @@ class ListUsers extends React.Component {
   onHandleActionClick(key) {
     const userObj = this.state.users.filter((myObj, index) => index === key)[0];
     this.setState({ user: userObj });
+  }
+
+  onHandleCheckboxClick(key) {
+    const usersCopy = this.state.users.slice();
+    const userObj = usersCopy.filter((myObj, index) => index === key)[0];
+    userObj.Active = !userObj.Active;
+    usersCopy[key] = userObj;
+    this.setState({ users: usersCopy, usersDetails: usersCopy });
   }
 
   onHandleUpdateClick(obj, id) {
@@ -125,6 +134,7 @@ class ListUsers extends React.Component {
             rows={this.state.users}
             onHandleClick = {this.onHandleNameClick}
             onActionsClick = {this.onHandleActionClick}
+            onCheckboxChange = {this.onHandleCheckboxClick}
           />
           {Object.keys(this.state.user).length > 0 ?
             <Model

@@ -13,6 +13,7 @@ const InputField = props => <div>
             value={props.currentValue}
             onChange = {props.onHandleChange}
         />
+        {props.validation ? <div></div> : <div><p style={{ color: 'red' }}>{props.message}</p></div>}
     </div>;
 
 

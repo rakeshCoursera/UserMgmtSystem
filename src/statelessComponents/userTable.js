@@ -13,6 +13,7 @@ const TableHeader = (props) => {
 };
 
 const TableRow = (props) => {
+  let isactive = false;
   const rows = props.row.map((val, index) => {
     if (index === 0) {
       return (
@@ -24,6 +25,7 @@ const TableRow = (props) => {
     }
 
     if (index === (props.row.length - 1)) {
+      isactive = val;
       const textValue = val === true ? 'Active' : 'Inactive';
       const colorValue = val === true ? { color: 'green' } : { color: 'red' };
       return <td key={index.toString()}> <p style={colorValue}>{textValue} </p></td>;
@@ -34,6 +36,7 @@ const TableRow = (props) => {
     <button type="button" className="btn btn-link" onClick = {() => props.onActionHandleClick(props.rowNo)} data-toggle="modal" data-target="#myModal">
       Edit
     </button>
+    <label>IsActive <input type="checkbox" checked={isactive} value={isactive} onChange={() => props.onCheckboxChange(props.rowNo)}/></label>
   </td>);
   return (
     <tr>
@@ -48,9 +51,11 @@ const Table = (props) => {
     <TableRow
       key={index.toString()}
       rowNo = {index}
+      isactive={props.isactive}
       row={TableHeaders.map(objKey => val[objKey])}
       onRowHandleClick = {props.onHandleClick}
       onActionHandleClick = {props.onActionsClick}
+      onCheckboxChange = {props.onCheckboxChange}
     />);
   return (
     <div className="table-responsive">
