@@ -1,7 +1,8 @@
-/* eslint-disable no-unused-vars */
-import React from 'react';
-/* eslint-enable no-unused-vars */
+import React from 'react'; // eslint-disable-line no-unused-vars
 
+// A functional component to reder the table
+
+// Make the Table header
 const TableHeader = (props) => {
   const headers = props.headers.map((val, index) => <th key={index.toString()}>{val}</th>);
   headers.push(<th key='Actions'>Actions</th>);
@@ -12,6 +13,7 @@ const TableHeader = (props) => {
   );
 };
 
+// Make the Table Row
 const TableRow = (props) => {
   let isactive = false;
   const rows = props.row.map((val, index) => {
@@ -45,6 +47,7 @@ const TableRow = (props) => {
   );
 };
 
+// Make the Table
 const Table = (props) => {
   const TableHeaders = Object.keys(props.rows[0]).filter(val => val !== '__v' && val !== '_id');
   const TableRows = props.rows.map((val, index) =>

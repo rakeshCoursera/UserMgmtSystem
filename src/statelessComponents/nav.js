@@ -1,5 +1,6 @@
 import React from 'react';
 
+// Navbar of the application
 export default class Nav extends React.Component {
   render() {
     return (

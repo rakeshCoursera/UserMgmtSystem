@@ -1,12 +1,11 @@
-/* eslint-disable no-unused-vars */
-import React from 'react';
-/* eslint-enable no-unused-vars */
+import React from 'react'; // eslint-disable-line no-unused-vars
 import { Switch, Route, Link } from 'react-router-dom';
 import NotFound from '../statelessComponents/notFound';
 import ListUsers from './listUsers';
 import UserDetails from './userDetails';
 import Nav from '../statelessComponents/nav';
 
+// Declare the routes and associated components using React Router
 const App = () => (
   <div>
      <Nav>

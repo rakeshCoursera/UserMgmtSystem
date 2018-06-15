@@ -1,8 +1,10 @@
+// APIs to insert and retrieve the data from database
 const express = require('express');
 const User = require('../models/userSchema');
 
 const router = express.Router();
 
+// get all users from the db
 router.get('/', (req, res) => {
   User.find({}, (err, doc) => {
     if (!err) {
@@ -13,6 +15,7 @@ router.get('/', (req, res) => {
   });
 });
 
+// create a new user and save into the db
 router.post('/', (req, res) => {
   User.create({
     first_name: req.body.first_name,
@@ -30,6 +33,7 @@ router.post('/', (req, res) => {
   });
 });
 
+// to get a particular user details
 router.get('/:id', (req, res) => {
   User.findOne({
     _id: req.params.id,
@@ -42,6 +46,7 @@ router.get('/:id', (req, res) => {
   });
 });
 
+// to update a particular user details
 router.put('/:id', (req, res) => {
   User.findByIdAndUpdate({
     _id: req.params.id,
@@ -61,6 +66,7 @@ router.put('/:id', (req, res) => {
   });
 });
 
+// to delete a particular user
 router.delete('/:id', (req, res) => {
   User.findByIdAndRemove({
     _id: req.params.id,

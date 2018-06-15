@@ -6,6 +6,8 @@ import InputField from '../statelessComponents/input';
 import Model from './modal';
 import UserTable from '../statelessComponents/userTable';
 
+// Listing page with user table information and table filter
+// Table with clickable fields and popup for viewing/editing the user details
 class ListUsers extends React.Component {
   constructor(props) {
     super(props);
@@ -16,6 +18,7 @@ class ListUsers extends React.Component {
       select: 'Name',
       filterValue: '',
     };
+    // binding event handlers with the current context
     this.onHandleSelectChange = this.onHandleSelectChange.bind(this);
     this.onHandleInputChange = this.onHandleInputChange.bind(this);
     this.onHandleNameClick = this.onHandleNameClick.bind(this);
@@ -24,7 +27,7 @@ class ListUsers extends React.Component {
     this.onHandleCheckboxClick = this.onHandleCheckboxClick.bind(this);
   }
 
-  // Get the users array and save into users array
+  // Get the users array and save into component state
   componentDidMount() {
     const that = this;
     axios.get('/v1/user') // get the products related data
@@ -39,6 +42,7 @@ class ListUsers extends React.Component {
       });
   }
 
+  // event handler
   onHandleSelectChange(event) {
     this.setState({ select: event.target.value });
   }

@@ -1,5 +1,7 @@
 import moment from 'moment';
+import Promise from 'bluebird';
 
+// format the array containing objects to the specified display format
 const formatUserArray = users => new Promise((resolve, reject) => {
   const userData = users.map((myObj) => {
     const obj = {};

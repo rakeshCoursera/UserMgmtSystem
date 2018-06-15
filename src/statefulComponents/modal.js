@@ -1,9 +1,8 @@
-/* eslint-disable no-unused-vars */
 import React from 'react';
-/* eslint-enable no-unused-vars */
 import moment from 'moment';
 import InputField from '../statelessComponents/input';
 
+// Adding or Editing user popup class component
 class Model extends React.Component {
   constructor(props) {
     super(props);
@@ -30,6 +29,7 @@ class Model extends React.Component {
     this.onUpdateClick = this.onUpdateClick.bind(this);
   }
 
+  // life cycle method: execute when props change
   componentWillReceiveProps(nextProps) {
     if (this.props.user._id !== nextProps.user._id) {
       this.setState({
