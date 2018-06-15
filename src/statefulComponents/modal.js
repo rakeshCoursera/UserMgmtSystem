@@ -8,11 +8,11 @@ class Model extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      fname: props.user.Name.split(' ')[0],
-      lname: props.user.Name.split(' ')[props.user.Name.split(' ').length - 1],
-      email: props.user.Email,
-      mobile: props.user.Mobile,
-      dob: moment(props.user['Date Of Birth'], 'DD MMM YYYY').format('YYYY-MM-DD'),
+      fname: this.props.user.Name.split(' ')[0],
+      lname: this.props.user.Name.split(' ')[this.props.user.Name.split(' ').length - 1],
+      email: this.props.user.Email,
+      mobile: this.props.user.Mobile,
+      dob: moment(this.props.user['Date Of Birth'], 'DD MMM YYYY').format('YYYY-MM-DD'),
       fnameValid: true,
       lnameValid: true,
       emailValid: true,
@@ -28,6 +28,18 @@ class Model extends React.Component {
     this.onHandleDOBChange = this.onHandleDOBChange.bind(this);
     this.onCloseClick = this.onCloseClick.bind(this);
     this.onUpdateClick = this.onUpdateClick.bind(this);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.user._id !== nextProps.user._id) {
+      this.setState({
+        fname: nextProps.user.Name.split(' ')[0],
+        lname: nextProps.user.Name.split(' ')[nextProps.user.Name.split(' ').length - 1],
+        email: nextProps.user.Email,
+        mobile: nextProps.user.Mobile,
+        dob: moment(nextProps.user['Date Of Birth'], 'DD MMM YYYY').format('YYYY-MM-DD'),
+      });
+    }
   }
 
   onHandleFnameChange(event) {
@@ -49,10 +61,8 @@ class Model extends React.Component {
   }
 
   onHandleEmailChange(event) {
-    this.setState({ email: event.target.value }, () => {
-      const pattern = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-      this.setState({ emailValid: pattern.test(event.target.value) });
-    });
+    const pattern = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+    this.setState({ email: event.target.value, emailValid: pattern.test(event.target.value) });
   }
 
   onHandleMobileChange(event) {
@@ -107,7 +117,7 @@ class Model extends React.Component {
 
   render() {
     return (
-      <form className="modal fade" id="myModal" data-backdrop="static" role="dialog">
+      <form className="modal fade" id="myModal" role="dialog">
         <div className="modal-dialog modal-lg">
           <div className="modal-content">
             <div className="modal-header">

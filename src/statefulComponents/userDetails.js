@@ -41,11 +41,12 @@ class Form extends React.Component {
     return (
       <div>
         <div>
-        <button type="button" class="btn btn-default" onClick={this.onHandleClick}>
+        <button type="button" className="btn btn-info" onClick={this.onHandleClick}>
           <b>Back to List</b>
         </button>
         </div>
         <div>
+          <br />
           {fields}
         </div>
       </div>
