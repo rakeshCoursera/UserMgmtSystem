@@ -72,7 +72,7 @@ class ListUsers extends React.Component {
   }
 
   onHandleUpdateClick(obj, id) {
-    console.log('obj, Id: ', obj, id);
+    obj.active = this.state.users.filter(newObj => newObj._id === id)[0].Active;
     const that = this;
     axios.put(`/v1/user/${id}`, obj)
       .then((response) => {
@@ -80,13 +80,12 @@ class ListUsers extends React.Component {
         const indexNum = this.state.users.findIndex(myObj => myObj._id === id);
         FormatUserArray([response.data]).then((retArr) => {
           userCopy[indexNum] = retArr[0];
-          console.log('Return Array: ', retArr);
           that.setState({ users: userCopy, usersDetails: userCopy });
         }).catch((err) => {
-          console.log('Error update: ', err);
+          console.log('Error: ', err);
         });
       }).catch((err) => {
-        console.log('Error update2: ', err);
+        console.log('Error: ', err);
       });
   }
 
