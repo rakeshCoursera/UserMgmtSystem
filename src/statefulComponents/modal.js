@@ -56,7 +56,6 @@ class Model extends React.Component {
   }
 
   onHandleMobileChange(event) {
-    console.log('Number: ', event.target.value);
     this.setState({ mobile: event.target.value });
     const numberLength = ((event.target.value).toString()).length;
     if (numberLength === 10) {
@@ -67,7 +66,6 @@ class Model extends React.Component {
   }
 
   onHandleDOBChange(event) {
-    console.log('date: ', event.target.value);
     this.setState({ dob: event.target.value });
     if (moment(event.target.value).isValid()) {
       this.setState({ dobValid: true });
