@@ -2,25 +2,21 @@
 import React from 'react';
 /* eslint-enable no-unused-vars */
 import { Switch, Route, Link } from 'react-router-dom';
-import NotFound from './components/notFound';
+import NotFound from '../statelessComponents/notFound';
 import ListUsers from './listUsers';
-
-const Home = () => (
-  <div><h1> Welcome to React </h1></div>
-);
+import UserDetails from './userDetails';
+import Nav from '../statelessComponents/nav';
 
 const App = () => (
   <div>
-    <nav>
-    {/* <img className="logo" src="../public/images/logo.png" /> */}
-      <ul>
+     <Nav>
+      <ul className="nav navbar-nav">
         <li><Link to="/">Home</Link></li>
-        <li><Link to="/users">Users</Link></li>
       </ul>
-    </nav>
+    </Nav>
     <Switch>
-      <Route exact path="/" component={Home}/>
-      <Route exact path="/users" component={ListUsers}/>
+      <Route exact path="/" component={ListUsers}/>
+      <Route path="/user/:userId" render={props => <UserDetails {...props} />}/>
       <Route component={NotFound} />
     </Switch>
   </div>
